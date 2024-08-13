@@ -5,6 +5,7 @@
  */
 package org.springapiserver.api;
 
+import org.springapiserver.model.AuthData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,20 +32,21 @@ import jakarta.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
+@jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-13T18:28:45.818982442Z[GMT]")
 @Validated
 public interface AuthorizeApi {
 
-    @Operation(summary = "Get authorization JWT token", description = "Returns JWT token for further authorization.", security = {
-        @SecurityRequirement(name = "jwt_token_auth")    }, tags={ "general" })
+    @Operation(summary = "Get authorization JWT token", description = "Returns JWT token for further authorization.", tags={ "general" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))),
         
         @ApiResponse(responseCode = "401", description = "unauthorized") })
     @RequestMapping(value = "/authorize",
         produces = { "text/plain" }, 
+        consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<String> authorizePost();
+    ResponseEntity<String> authorizePost(@Parameter(in = ParameterIn.DEFAULT, description = "Send authorization data", schema=@Schema()) @Valid @RequestBody AuthData body
+);
 
 }
 
