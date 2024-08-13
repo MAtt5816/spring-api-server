@@ -3,6 +3,8 @@ package org.springapiserver.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.*;
 
@@ -13,168 +15,54 @@ import jakarta.validation.constraints.*;
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
 
 
+@Getter
+@Setter
 public class Location   {
   @JsonProperty("street_number")
+  @Schema(example = "2595", description = "")
+  @NotNull
   private Integer streetNumber = null;
 
   @JsonProperty("street_name")
+  @Schema(example = "Main Street", description = "")
+  @NotNull
+  @Size(max=100)
   private String streetName = null;
 
   @JsonProperty("city")
+  @Schema(example = "Tamworth", description = "")
+  @NotNull
+  @Size(max=100)
   private String city = null;
 
   @JsonProperty("state")
+  @Schema(example = "Queensland", description = "")
+  @NotNull
+  @Size(max=100)
   private String state = null;
 
   @JsonProperty("country")
+  @Schema(example = "Australia", description = "")
+  @NotNull
+  @Size(max=100)
   private String country = null;
 
   @JsonProperty("postcode")
+  @Schema(example = "6066", description = "")
+  @NotNull
+  @Size(max=20)
   private String postcode = null;
 
   @JsonProperty("timezone")
+  @Schema(example = "330", description = "")
+  @NotNull
+  @Size(max=10)
   private String timezone = null;
 
   public Location streetNumber(Integer streetNumber) {
     this.streetNumber = streetNumber;
     return this;
   }
-
-  /**
-   * Get streetNumber
-   * @return streetNumber
-   **/
-  @Schema(example = "2595", description = "")
-      @NotNull
-
-    public Integer getStreetNumber() {
-    return streetNumber;
-  }
-
-  public void setStreetNumber(Integer streetNumber) {
-    this.streetNumber = streetNumber;
-  }
-
-  public Location streetName(String streetName) {
-    this.streetName = streetName;
-    return this;
-  }
-
-  /**
-   * Get streetName
-   * @return streetName
-   **/
-  @Schema(example = "Main Street", description = "")
-      @NotNull
-
-  @Size(max=100)   public String getStreetName() {
-    return streetName;
-  }
-
-  public void setStreetName(String streetName) {
-    this.streetName = streetName;
-  }
-
-  public Location city(String city) {
-    this.city = city;
-    return this;
-  }
-
-  /**
-   * Get city
-   * @return city
-   **/
-  @Schema(example = "Tamworth", description = "")
-      @NotNull
-
-  @Size(max=100)   public String getCity() {
-    return city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public Location state(String state) {
-    this.state = state;
-    return this;
-  }
-
-  /**
-   * Get state
-   * @return state
-   **/
-  @Schema(example = "Queensland", description = "")
-      @NotNull
-
-  @Size(max=100)   public String getState() {
-    return state;
-  }
-
-  public void setState(String state) {
-    this.state = state;
-  }
-
-  public Location country(String country) {
-    this.country = country;
-    return this;
-  }
-
-  /**
-   * Get country
-   * @return country
-   **/
-  @Schema(example = "Australia", description = "")
-      @NotNull
-
-  @Size(max=100)   public String getCountry() {
-    return country;
-  }
-
-  public void setCountry(String country) {
-    this.country = country;
-  }
-
-  public Location postcode(String postcode) {
-    this.postcode = postcode;
-    return this;
-  }
-
-  /**
-   * Get postcode
-   * @return postcode
-   **/
-  @Schema(example = "6066", description = "")
-      @NotNull
-
-  @Size(max=20)   public String getPostcode() {
-    return postcode;
-  }
-
-  public void setPostcode(String postcode) {
-    this.postcode = postcode;
-  }
-
-  public Location timezone(String timezone) {
-    this.timezone = timezone;
-    return this;
-  }
-
-  /**
-   * Get timezone
-   * @return timezone
-   **/
-  @Schema(example = "330", description = "")
-      @NotNull
-
-  @Size(max=10)   public String getTimezone() {
-    return timezone;
-  }
-
-  public void setTimezone(String timezone) {
-    this.timezone = timezone;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {

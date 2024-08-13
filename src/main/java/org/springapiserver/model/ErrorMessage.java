@@ -3,6 +3,8 @@ package org.springapiserver.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.*;
 
@@ -13,53 +15,23 @@ import jakarta.validation.constraints.*;
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
 
 
+@Getter
+@Setter
 public class ErrorMessage   {
   @JsonProperty("field")
+  @Schema(example = "first_name", description = "")
+  @NotNull
   private String field = null;
 
   @JsonProperty("message")
+  @Schema(example = "Input must be string", description = "")
+  @NotNull
   private String message = null;
 
   public ErrorMessage field(String field) {
     this.field = field;
     return this;
   }
-
-  /**
-   * Get field
-   * @return field
-   **/
-  @Schema(example = "first_name", description = "")
-      @NotNull
-
-    public String getField() {
-    return field;
-  }
-
-  public void setField(String field) {
-    this.field = field;
-  }
-
-  public ErrorMessage message(String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Get message
-   * @return message
-   **/
-  @Schema(example = "Input must be string", description = "")
-      @NotNull
-
-    public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {

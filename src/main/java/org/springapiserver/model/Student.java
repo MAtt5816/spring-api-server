@@ -5,6 +5,8 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -15,334 +17,91 @@ import jakarta.validation.constraints.*;
 @Validated
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
 
-
+@Getter
+@Setter
 public class Student   {
   @JsonProperty("id")
+  @Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY, description = "")
+  @NotNull
   private Integer id = null;
 
   @JsonProperty("gender")
+  @Schema(example = "female", description = "")
+  @NotNull
+  @Size(max=10)
   private String gender = null;
 
   @JsonProperty("title")
+  @Schema(example = "Miss", description = "")
+  @NotNull
+  @Size(max=20)
   private String title = null;
 
   @JsonProperty("first_name")
+  @Schema(example = "Terri", description = "")
+  @NotNull
+  @Size(max=50)
   private String firstName = null;
 
   @JsonProperty("last_name")
+  @Schema(example = "Lucas", description = "")
+  @NotNull
+  @Size(max=50)
   private String lastName = null;
 
   @JsonProperty("email")
+  @Schema(example = "terri.lucas@example.com", description = "")
+  @NotNull
+  @Size(max=100)
   private String email = null;
 
   @JsonProperty("dob")
+  @Schema(example = "Mon Nov 23 00:00:00 GMT 1964", description = "date of birth")
+  @NotNull
+  @Valid
   private LocalDate dob = null;
 
   @JsonProperty("registered")
+  @Schema(example = "2014-07-23T03:21:42.259Z", description = "date of registration")
+  @NotNull
+  @Valid
   private OffsetDateTime registered = null;
 
   @JsonProperty("phone")
+  @Schema(example = "03-2662-3559", description = "")
+  @NotNull
+  @Size(max=20)
   private String phone = null;
 
   @JsonProperty("id_name")
+  @Schema(example = "TFN", description = "national identification number type")
+  @NotNull
+  @Size(max=20)
   private String idName = null;
 
   @JsonProperty("id_value")
+  @Schema(example = "230000682", description = "national identification number value")
+  @NotNull
+  @Size(max=50)
   private String idValue = null;
 
   @JsonProperty("nat")
+  @Schema(example = "AU", description = "nationality short code")
+  @NotNull
+  @Size(max=10)
   private String nat = null;
 
   @JsonProperty("location")
+  @Schema(description = "")
+  @NotNull
+  @Valid
   private Location location = null;
 
   @JsonProperty("picture")
+  @Schema(description = "")
+  @NotNull
+  @Valid
   private Picture picture = null;
-
-  public Student id(Integer id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-   **/
-  @Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY, description = "")
-      @NotNull
-
-    public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public Student gender(String gender) {
-    this.gender = gender;
-    return this;
-  }
-
-  /**
-   * Get gender
-   * @return gender
-   **/
-  @Schema(example = "female", description = "")
-      @NotNull
-
-  @Size(max=10)   public String getGender() {
-    return gender;
-  }
-
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public Student title(String title) {
-    this.title = title;
-    return this;
-  }
-
-  /**
-   * Get title
-   * @return title
-   **/
-  @Schema(example = "Miss", description = "")
-      @NotNull
-
-  @Size(max=20)   public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Student firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
-  /**
-   * Get firstName
-   * @return firstName
-   **/
-  @Schema(example = "Terri", description = "")
-      @NotNull
-
-  @Size(max=50)   public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public Student lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
-
-  /**
-   * Get lastName
-   * @return lastName
-   **/
-  @Schema(example = "Lucas", description = "")
-      @NotNull
-
-  @Size(max=50)   public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public Student email(String email) {
-    this.email = email;
-    return this;
-  }
-
-  /**
-   * Get email
-   * @return email
-   **/
-  @Schema(example = "terri.lucas@example.com", description = "")
-      @NotNull
-
-  @Size(max=100)   public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public Student dob(LocalDate dob) {
-    this.dob = dob;
-    return this;
-  }
-
-  /**
-   * date of birth
-   * @return dob
-   **/
-  @Schema(example = "Mon Nov 23 00:00:00 GMT 1964", description = "date of birth")
-      @NotNull
-
-    @Valid
-    public LocalDate getDob() {
-    return dob;
-  }
-
-  public void setDob(LocalDate dob) {
-    this.dob = dob;
-  }
-
-  public Student registered(OffsetDateTime registered) {
-    this.registered = registered;
-    return this;
-  }
-
-  /**
-   * date of registration
-   * @return registered
-   **/
-  @Schema(example = "2014-07-23T03:21:42.259Z", description = "date of registration")
-      @NotNull
-
-    @Valid
-    public OffsetDateTime getRegistered() {
-    return registered;
-  }
-
-  public void setRegistered(OffsetDateTime registered) {
-    this.registered = registered;
-  }
-
-  public Student phone(String phone) {
-    this.phone = phone;
-    return this;
-  }
-
-  /**
-   * Get phone
-   * @return phone
-   **/
-  @Schema(example = "03-2662-3559", description = "")
-      @NotNull
-
-  @Size(max=20)   public String getPhone() {
-    return phone;
-  }
-
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-
-  public Student idName(String idName) {
-    this.idName = idName;
-    return this;
-  }
-
-  /**
-   * national identification number type
-   * @return idName
-   **/
-  @Schema(example = "TFN", description = "national identification number type")
-      @NotNull
-
-  @Size(max=20)   public String getIdName() {
-    return idName;
-  }
-
-  public void setIdName(String idName) {
-    this.idName = idName;
-  }
-
-  public Student idValue(String idValue) {
-    this.idValue = idValue;
-    return this;
-  }
-
-  /**
-   * national identification number value
-   * @return idValue
-   **/
-  @Schema(example = "230000682", description = "national identification number value")
-      @NotNull
-
-  @Size(max=50)   public String getIdValue() {
-    return idValue;
-  }
-
-  public void setIdValue(String idValue) {
-    this.idValue = idValue;
-  }
-
-  public Student nat(String nat) {
-    this.nat = nat;
-    return this;
-  }
-
-  /**
-   * nationality short code
-   * @return nat
-   **/
-  @Schema(example = "AU", description = "nationality short code")
-      @NotNull
-
-  @Size(max=10)   public String getNat() {
-    return nat;
-  }
-
-  public void setNat(String nat) {
-    this.nat = nat;
-  }
-
-  public Student location(Location location) {
-    this.location = location;
-    return this;
-  }
-
-  /**
-   * Get location
-   * @return location
-   **/
-  @Schema(description = "")
-      @NotNull
-
-    @Valid
-    public Location getLocation() {
-    return location;
-  }
-
-  public void setLocation(Location location) {
-    this.location = location;
-  }
-
-  public Student picture(Picture picture) {
-    this.picture = picture;
-    return this;
-  }
-
-  /**
-   * Get picture
-   * @return picture
-   **/
-  @Schema(description = "")
-      @NotNull
-
-    @Valid
-    public Picture getPicture() {
-    return picture;
-  }
-
-  public void setPicture(Picture picture) {
-    this.picture = picture;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {

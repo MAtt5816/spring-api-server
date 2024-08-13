@@ -3,6 +3,7 @@ package org.springapiserver.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.*;
 
@@ -13,53 +14,19 @@ import jakarta.validation.constraints.*;
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-13T18:28:45.818982442Z[GMT]")
 
 
+@Getter
 public class AuthData   {
   @JsonProperty("username")
+  @Schema(example = "user1", description = "")
+  @NotNull
+  @Size(max=50)
   private String username = null;
 
   @JsonProperty("passphrase")
-  private String passphrase = null;
-
-  public AuthData username(String username) {
-    this.username = username;
-    return this;
-  }
-
-  /**
-   * Get username
-   * @return username
-   **/
-  @Schema(example = "user1", description = "")
-      @NotNull
-
-  @Size(max=50)   public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public AuthData passphrase(String passphrase) {
-    this.passphrase = passphrase;
-    return this;
-  }
-
-  /**
-   * Get passphrase
-   * @return passphrase
-   **/
   @Schema(example = "secret_password123", description = "")
-      @NotNull
-
-  @Size(max=255)   public String getPassphrase() {
-    return passphrase;
-  }
-
-  public void setPassphrase(String passphrase) {
-    this.passphrase = passphrase;
-  }
-
+  @NotNull
+  @Size(max=255)
+  private String passphrase = null;
 
   @Override
   public boolean equals(Object o) {
