@@ -5,7 +5,10 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Generated;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
@@ -15,11 +18,14 @@ import jakarta.validation.constraints.*;
  * Student
  */
 @Validated
-@jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
+@Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
 
+@Entity(name = "students")
 @Getter
 @Setter
-public class Student   {
+@NoArgsConstructor
+public class Student {
+  @Id
   @JsonProperty("id")
   @Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY, description = "")
   @NotNull
@@ -92,19 +98,21 @@ public class Student   {
   private String nat = null;
 
   @JsonProperty("location")
+  @Embedded
   @Schema(description = "")
   @NotNull
   @Valid
   private Location location = null;
 
   @JsonProperty("picture")
+  @Embedded
   @Schema(description = "")
   @NotNull
   @Valid
   private Picture picture = null;
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -160,7 +168,7 @@ public class Student   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
