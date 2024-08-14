@@ -3,7 +3,9 @@ package org.springapiserver.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.*;
@@ -15,9 +17,18 @@ import jakarta.validation.constraints.*;
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
 
 
+@Entity
+@Table(name = "locations")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Location   {
+  @Id
+  @Column(name = "student_id", insertable = false, nullable = true)
+  @JsonProperty("student_id")
+  @Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+  private Long studentId;
+
   @JsonProperty("street_number")
   @Schema(example = "2595", description = "")
   @NotNull
@@ -59,10 +70,9 @@ public class Location   {
   @Size(max=10)
   private String timezone = null;
 
-  public Location streetNumber(Integer streetNumber) {
-    this.streetNumber = streetNumber;
-    return this;
-  }
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "student_id")
+  private Student student;
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -112,5 +122,29 @@ public class Location   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public void fillPartial(Location partialLocation) {
+    if (partialLocation.getStreetNumber() != null) {
+      this.setStreetNumber(partialLocation.getStreetNumber());
+    }
+    if (partialLocation.getStreetName() != null) {
+      this.setStreetName(partialLocation.getStreetName());
+    }
+    if (partialLocation.getCity() != null) {
+      this.setCity(partialLocation.getCity());
+    }
+    if (partialLocation.getState() != null) {
+      this.setState(partialLocation.getState());
+    }
+    if (partialLocation.getCountry() != null) {
+      this.setCountry(partialLocation.getCountry());
+    }
+    if (partialLocation.getPostcode() != null) {
+      this.setPostcode(partialLocation.getPostcode());
+    }
+    if (partialLocation.getTimezone() != null) {
+      this.setTimezone(partialLocation.getTimezone());
+    }
   }
 }

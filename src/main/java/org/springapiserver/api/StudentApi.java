@@ -5,6 +5,7 @@
  */
 package org.springapiserver.api;
 
+import org.springapiserver.dto.StudentDto;
 import org.springapiserver.model.ErrorMessage;
 import org.springapiserver.model.Student;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +45,7 @@ public interface StudentApi {
     @RequestMapping(value = "/student",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Student>> studentGet(@Min(1)@Parameter(in = ParameterIn.QUERY, description = "Number of students to return." ,schema=@Schema(allowableValues={ "1" }, minimum="1"
+    ResponseEntity<List<StudentDto>> studentGet(@Min(1)@Parameter(in = ParameterIn.QUERY, description = "Number of students to return." ,schema=@Schema(allowableValues={ "1" }, minimum="1"
 , defaultValue="1")) @Valid @RequestParam(value = "results", required = false, defaultValue="1") Integer results
 );
 
@@ -62,7 +64,9 @@ public interface StudentApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<List<Student>> studentPost(@Parameter(in = ParameterIn.DEFAULT, description = "Create a new students", required=true, schema=@Schema()) @Valid @RequestBody List<Student> body
+    @Validated
+    ResponseEntity<List<StudentDto>> studentPost(@Parameter(in = ParameterIn.DEFAULT, description = "Create a new students", required=true, schema=@Schema()) @RequestBody List<Student> body,
+                                                 BindingResult bindingResult
 );
 
 
@@ -96,8 +100,9 @@ public interface StudentApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.PATCH)
-    ResponseEntity<Student> studentStudentIdPatch(@Parameter(in = ParameterIn.PATH, description = "ID of the student to update", required=true, schema=@Schema()) @PathVariable("studentId") Integer studentId
-, @Parameter(in = ParameterIn.DEFAULT, description = "Update existing student", required=true, schema=@Schema()) @Valid @RequestBody Student body
+    @Validated
+    ResponseEntity<StudentDto> studentStudentIdPatch(@Parameter(in = ParameterIn.PATH, description = "ID of the student to update", required=true, schema=@Schema()) @PathVariable("studentId") Integer studentId
+, @Parameter(in = ParameterIn.DEFAULT, description = "Update existing student", required=true, schema=@Schema()) @RequestBody Student body, BindingResult bindingResult
 );
 
 
@@ -117,8 +122,10 @@ public interface StudentApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<Student> studentStudentIdPut(@Parameter(in = ParameterIn.PATH, description = "ID of the student to update", required=true, schema=@Schema()) @PathVariable("studentId") Integer studentId
-, @Parameter(in = ParameterIn.DEFAULT, description = "Update existing student", required=true, schema=@Schema()) @Valid @RequestBody Student body
+    @Validated
+    ResponseEntity<StudentDto> studentStudentIdPut(@Parameter(in = ParameterIn.PATH, description = "ID of the student to update", required=true, schema=@Schema()) @PathVariable("studentId") Integer studentId
+, @Parameter(in = ParameterIn.DEFAULT, description = "Update existing student", required=true, schema=@Schema()) @RequestBody Student body,
+                                                   BindingResult bindingResult
 );
 
 }

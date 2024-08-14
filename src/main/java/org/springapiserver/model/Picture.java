@@ -3,7 +3,9 @@ package org.springapiserver.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.*;
@@ -15,9 +17,18 @@ import jakarta.validation.constraints.*;
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
 
 
+@Entity
+@Table(name = "pictures")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Picture   {
+  @Id
+  @Column(name = "student_id", insertable = false, nullable = true)
+  @JsonProperty("student_id")
+  @Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+  private Long studentId;
+
   @JsonProperty("large")
   @Schema(example = "https://randomuser.me/api/portraits/men/75.jpg", description = "")
   @NotNull
@@ -36,10 +47,9 @@ public class Picture   {
   @Size(max=255)
   private String thumbnail = null;
 
-  public Picture large(String large) {
-    this.large = large;
-    return this;
-  }
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "student_id")
+  private Student student;
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -64,7 +74,7 @@ public class Picture   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Picture {\n");
-    
+
     sb.append("    large: ").append(toIndentedString(large)).append("\n");
     sb.append("    medium: ").append(toIndentedString(medium)).append("\n");
     sb.append("    thumbnail: ").append(toIndentedString(thumbnail)).append("\n");
@@ -81,5 +91,17 @@ public class Picture   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+  
+  public void fillPartial(Picture partialPicture) {
+    if (partialPicture.getLarge() != null) {
+      this.setLarge(partialPicture.getLarge());
+    }
+    if (partialPicture.getMedium() != null) {
+      this.setMedium(partialPicture.getMedium());
+    }
+    if (partialPicture.getThumbnail() != null) {
+      this.setThumbnail(partialPicture.getThumbnail());
+    }
   }
 }

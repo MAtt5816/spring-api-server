@@ -28,11 +28,6 @@ public class ErrorMessage   {
   @NotNull
   private String message = null;
 
-  public ErrorMessage field(String field) {
-    this.field = field;
-    return this;
-  }
-
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {

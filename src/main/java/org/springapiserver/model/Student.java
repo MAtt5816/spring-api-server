@@ -3,13 +3,13 @@ package org.springapiserver.model;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -20,16 +20,19 @@ import jakarta.validation.constraints.*;
 @Validated
 @Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-10T15:09:49.444563610Z[GMT]")
 
-@Entity(name = "students")
+@Entity
+@Table(name = "students")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Student {
   @Id
+  @Column(name = "id")
   @JsonProperty("id")
   @Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY, description = "")
-  @NotNull
-  private Integer id = null;
+  private Long id = null;
 
   @JsonProperty("gender")
   @Schema(example = "female", description = "")
@@ -98,18 +101,18 @@ public class Student {
   private String nat = null;
 
   @JsonProperty("location")
-  @Embedded
   @Schema(description = "")
   @NotNull
   @Valid
-  private Location location = null;
+  @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+  private Location location;
 
   @JsonProperty("picture")
-  @Embedded
   @Schema(description = "")
   @NotNull
   @Valid
-  private Picture picture = null;
+  @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+  private Picture picture;
 
   @Override
   public boolean equals(Object o) {
@@ -173,5 +176,44 @@ public class Student {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public void fillPartial(Student partialStudent) {
+    if (partialStudent.getGender() != null) {
+      this.setGender(partialStudent.getGender());
+    }
+    if (partialStudent.getTitle() != null) {
+      this.setTitle(partialStudent.getTitle());
+    }
+    if (partialStudent.getFirstName() != null) {
+      this.setFirstName(partialStudent.getFirstName());
+    }
+    if (partialStudent.getLastName() != null) {
+      this.setLastName(partialStudent.getLastName());
+    }
+    if (partialStudent.getEmail() != null) {
+      this.setEmail(partialStudent.getEmail());
+    }
+    if (partialStudent.getDob() != null) {
+      this.setDob(partialStudent.getDob());
+    }
+    if (partialStudent.getPhone() != null) {
+      this.setPhone(partialStudent.getPhone());
+    }
+    if (partialStudent.getIdName() != null) {
+      this.setIdName(partialStudent.getIdName());
+    }
+    if (partialStudent.getIdValue() != null) {
+      this.setIdValue(partialStudent.getIdValue());
+    }
+    if (partialStudent.getNat() != null) {
+      this.setNat(partialStudent.getNat());
+    }
+    if (partialStudent.getLocation() != null) {
+      this.getLocation().fillPartial(partialStudent.getLocation());
+    }
+    if (partialStudent.getPicture() != null) {
+      this.getPicture().fillPartial(partialStudent.getPicture());
+    }
   }
 }
