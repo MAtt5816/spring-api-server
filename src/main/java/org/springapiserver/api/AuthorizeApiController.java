@@ -1,5 +1,9 @@
 package org.springapiserver.api;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springapiserver.dao.UserDao;
 import org.springapiserver.model.AuthData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +17,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springapiserver.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,39 +35,61 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import jakarta.servlet.http.HttpServletRequest;
+
+import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-13T18:28:45.818982442Z[GMT]")
 @RestController
 public class AuthorizeApiController implements AuthorizeApi {
+    @Autowired
+    private UserDao userDao;
 
-    private static final Logger log = LoggerFactory.getLogger(AuthorizeApiController.class);
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
-    private final ObjectMapper objectMapper;
-
-    private final HttpServletRequest request;
-
-    @org.springframework.beans.factory.annotation.Autowired
-    public AuthorizeApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
-    }
+    // Token validity (e.g., 86400000 milliseconds = 1 day)
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
 
     public ResponseEntity<String> authorizePost(@Parameter(in = ParameterIn.DEFAULT, description = "Send authorization data", schema=@Schema()) @Valid @RequestBody AuthData body
 ) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<String>(objectMapper.readValue("\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\"", String.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+        try {
+            User user = userDao.findByUsername(body.getUsername());
 
-        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+            String passphrase = body.getPassphrase() + (user != null ? user.getSalt() : "");
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] crypto = digest.digest(passphrase.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hash = new StringBuilder();
+            for (byte theByte : crypto) {
+                hash.append(String.format("%02x", theByte));
+            }
+            String passHash = hash.toString();
+
+            assert user != null;
+            if (!passHash.equals(user.getSha256())) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            // JWT generate
+            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+            String token = Jwts.builder()
+                    .setSubject(user.getUsername())
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                    .signWith(key, SignatureAlgorithm.HS256)
+                    .compact();
+
+            return ResponseEntity.ok(token);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }
